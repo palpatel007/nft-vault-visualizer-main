@@ -54,7 +54,7 @@ export const useNFTs = (wallet?: string) => {
       setLoading(true);
       setError(null);
       try {
-        const apiUrl = `https://api.alphalions.io/api/nfts?wallet=${wallet}&contract=${CONTRACT}&page=1&limit=1000`;
+        const apiUrl = `https://localhost:3000/api/nfts?wallet=${WALLET}&contract=${CONTRACT}&page=1&limit=1000`;
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
