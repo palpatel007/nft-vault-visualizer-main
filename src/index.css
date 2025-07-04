@@ -1,0 +1,201 @@
+@font-face {
+  font-family: 'StrongConcrete';
+  src: url('./font/StrongConcrete-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'FunnelDisplay';
+  src: url('./font/FunnelDisplay-Regular.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark theme colors optimized for NFT dashboard */
+@layer base {
+  :root {
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 217 19% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 217 19% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 263 70% 50%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217 19% 12%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 19% 12%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217 19% 12%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 19% 15%;
+    --input: 217 19% 15%;
+    --ring: 263 70% 50%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-dark-bg text-foreground font-inter;
+    background: linear-gradient(135deg, #0a0a0b 0%, #141417 100%);
+    min-height: 100vh;
+    /* Improve touch scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+  }
+
+  /* Set StrongConcrete as the global font */
+  html, body {
+    font-family: 'FunnelDisplay', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'StrongConcrete', sans-serif;
+  }
+
+  /* Responsive typography */
+  h1 {
+    @apply text-2xl sm:text-3xl lg:text-4xl xl:text-5xl;
+  }
+  
+  h2 {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+  
+  h3 {
+    @apply text-lg sm:text-xl lg:text-2xl;
+  }
+
+  /* Improve button touch targets on mobile */
+  button, a {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Better mobile spacing */
+  .container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-dark-surface/50 backdrop-blur-lg border border-dark-border;
+  }
+  
+  .nft-card {
+    @apply glass-card p-4 transition-all duration-300 hover:shadow-2xl hover:shadow-nft-accent/20 hover:border-nft-accent/30;
+    border-radius: 0 !important;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-nft-accent to-nft-secondary bg-clip-text text-transparent;
+  }
+
+  /* Mobile-specific card improvements */
+  .nft-card {
+    @apply sm:hover:scale-105;
+  }
+
+  /* Responsive grid improvements */
+  .nft-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6;
+  }
+
+  /* Mobile-friendly modal */
+  .modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4;
+  }
+
+  .modal-content {
+    @apply max-w-[90vw] max-h-[90vh] overflow-auto;
+  }
+
+  /* Touch-friendly buttons */
+  .touch-button {
+    @apply min-h-[44px] min-w-[44px] p-2 sm:p-3;
+  }
+
+  /* Responsive sidebar */
+  .sidebar-mobile {
+    @apply w-full md:w-64;
+  }
+
+  /* Mobile navigation improvements */
+  .mobile-nav {
+    @apply flex flex-col sm:flex-row items-center gap-2 sm:gap-3;
+  }
+}
+
+/* React Toastify custom styles */
+.Toastify__toast {
+  @apply bg-dark-surface border border-dark-border;
+}
+
+.Toastify__toast--success {
+  @apply border-green-500/30;
+}
+
+.Toastify__toast--error {
+  @apply border-red-500/30;
+}
+
+.Toastify__toast--info {
+  @apply border-blue-500/30;
+}
+
+/* Mobile-specific toast positioning */
+@media (max-width: 640px) {
+  .Toastify__toast-container {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+  }
+  
+  .Toastify__toast {
+    font-size: 0.875rem;
+  }
+}
+
+/* Prevent zoom on input focus on iOS */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Smooth scrolling for mobile */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: none) {
+  .nft-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+  
+  .hover\:shadow-lg:hover {
+    box-shadow: none;
+  }
+}
