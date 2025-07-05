@@ -89,7 +89,7 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, index, downloadFormat, sh
         const blob = await response.blob();
         
         if (blob.size === 0) {
-          toast.error('GLB file is empty for this token. No 3D model available.');
+          toast.error('No 3D model available.');
           return;
         }
         
@@ -226,9 +226,8 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, index, downloadFormat, sh
                     padding: '20px'
                   }}>
                     <div>
-                      <div style={{ fontSize: '24px', marginBottom: '8px' }}>⚠️</div>
-                      <div>3D Model Not Available</div>
-                      <div style={{ fontSize: '12px', marginTop: '4px' }}>This token has no GLB model</div>
+                      <div style={{ fontSize: '24px', marginBottom: '8px' }}>⏳</div>
+                      <div>Coming Soon</div>
                     </div>
                   </div>
                 )
@@ -239,9 +238,8 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, index, downloadFormat, sh
                   <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg">
                     <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse flex items-center justify-center">
                       <div className="text-center text-gray-500">
-                        <div style={{ fontSize: '24px', marginBottom: '8px' }}>⚠️</div>
-                        <div className="text-sm font-medium">3D Model Not Available</div>
-                        <div className="text-xs mt-1">This token has no FBX model</div>
+                        <div style={{ fontSize: '24px', marginBottom: '8px' }}>⏳</div>
+                        <div className="text-sm font-medium">Coming Soon</div>
                       </div>
                     </div>
                   </div>
@@ -341,13 +339,12 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, index, downloadFormat, sh
               <div className={`w-2 h-2 rounded-full ${
                 (downloadFormat === 'GLB' && hasGLB) || (downloadFormat === 'FBX' && hasFBX)
                   ? 'bg-green-500'
-                  : 'bg-red-500'
+                  : 'bg-yellow-500'
               }`}></div>
               <span className="text-xs text-gray-600">
                 {(downloadFormat === 'GLB' && hasGLB) || (downloadFormat === 'FBX' && hasFBX)
                   ? '3D Model Available'
-                  : 'No 3D Model'
-                }
+                  : 'Coming Soon'}
               </span>
             </div>
           )}
@@ -409,9 +406,8 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, index, downloadFormat, sh
                     borderRadius: '12px'
                   }}>
                     <div>
-                      <div style={{ fontSize: '32px', marginBottom: '12px' }}>⚠️</div>
-                      <div>3D Model Not Available</div>
-                      <div style={{ fontSize: '14px', marginTop: '8px' }}>This token has no GLB model</div>
+                      <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏳</div>
+                      <div>Coming Soon</div>
                     </div>
                   </div>
                 )
@@ -422,9 +418,8 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, index, downloadFormat, sh
                   <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg">
                     <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse flex items-center justify-center">
                       <div className="text-center text-gray-500">
-                        <div style={{ fontSize: '32px', marginBottom: '12px' }}>⚠️</div>
-                        <div className="text-base font-medium">3D Model Not Available</div>
-                        <div className="text-sm mt-2">This token has no FBX model</div>
+                        <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏳</div>
+                        <div className="text-base font-medium">Coming Soon</div>
                       </div>
                     </div>
                   </div>
@@ -444,9 +439,8 @@ export const NFTCard: React.FC<NFTCardProps> = ({ nft, index, downloadFormat, sh
                   borderRadius: '12px'
                 }}>
                   <div>
-                    <div style={{ fontSize: '32px', marginBottom: '12px' }}>❓</div>
-                    <div>Unknown 3D Format</div>
-                    <div style={{ fontSize: '14px', marginTop: '8px' }}>Please select GLB or FBX</div>
+                    <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏳</div>
+                    <div>Coming Soon</div>
                   </div>
                 </div>
               )}

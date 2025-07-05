@@ -262,9 +262,8 @@ const GLBViewer: React.FC<GLBViewerProps> = ({
           padding: '20px'
         }}>
           <div>
-            <div style={{ fontSize: '24px', marginBottom: '8px' }}>⚠️</div>
-            <div>3D Model Not Available</div>
-            <div style={{ fontSize: '12px', marginTop: '4px' }}>This token has no 3D model</div>
+            <div style={{ fontSize: '24px', marginBottom: '8px' }}>⏳</div>
+            <div>Coming Soon</div>
           </div>
         </div>
       )}
