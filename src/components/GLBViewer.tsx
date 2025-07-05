@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -10,6 +10,24 @@ interface GLBViewerProps {
   onError?: (error: any) => void;
   onSuccess?: () => void;
 }
+
+// Simple skeleton loader component
+const ModelSkeleton = ({ backgroundColor = '#dddddd' }: { backgroundColor?: string }) => (
+  <div 
+    style={{ 
+      width: '100%', 
+      height: '100%',
+      backgroundColor: backgroundColor,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+  >
+    <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg">
+      <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse"></div>
+    </div>
+  </div>
+);
 
 const GLBViewer: React.FC<GLBViewerProps> = ({ 
   modelPath, 
@@ -24,9 +42,16 @@ const GLBViewer: React.FC<GLBViewerProps> = ({
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const animationIdRef = useRef<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [modelLoaded, setModelLoaded] = useState(false);
 
   useEffect(() => {
     if (!mountRef.current) return;
+
+    setIsLoading(true);
+    setHasError(false);
+    setModelLoaded(false);
 
     // Get card size
     const width = mountRef.current.clientWidth;
@@ -100,9 +125,7 @@ const GLBViewer: React.FC<GLBViewerProps> = ({
       modelPath,
       (gltf) => {
         scene.add(gltf.scene);
-        console.log("Model loaded successfully");
-        onSuccess?.();
-
+        
         // --- Disable shadow casting for model ---
         gltf.scene.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
@@ -135,14 +158,18 @@ const GLBViewer: React.FC<GLBViewerProps> = ({
         camera.lookAt(center);
         controls.target.copy(center);
         controls.update();
+
+        // Set loading states after model is fully loaded
+        setIsLoading(false);
+        setModelLoaded(true);
+        onSuccess?.();
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        // console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
       },
       (error) => {
-        console.error("Error loading model:", error);
-        console.error("This usually means the GLB file is corrupted or invalid.");
-        console.error("Try using a different GLB file or check if the file was properly exported.");
+        setIsLoading(false);
+        setHasError(true);
         onError?.(error);
       }
     );
@@ -193,15 +220,66 @@ const GLBViewer: React.FC<GLBViewerProps> = ({
 
   return (
     <div 
-      ref={mountRef} 
       className={className}
       style={{ 
         width: '100%', 
         height: '100%',
         margin: 0,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative'
       }}
-    />
+    >
+      {/* Skeleton loader - shown while loading */}
+      {isLoading && (
+        <div style={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 10
+        }}>
+          <ModelSkeleton backgroundColor={backgroundColor} />
+        </div>
+      )}
+      
+      {/* Error state - shown when there's an error */}
+      {hasError && (
+        <div style={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: backgroundColor,
+          color: '#666',
+          fontSize: '14px',
+          textAlign: 'center',
+          padding: '20px'
+        }}>
+          <div>
+            <div style={{ fontSize: '24px', marginBottom: '8px' }}>⚠️</div>
+            <div>3D Model Not Available</div>
+            <div style={{ fontSize: '12px', marginTop: '4px' }}>This token has no 3D model</div>
+          </div>
+        </div>
+      )}
+      
+      {/* 3D viewer - always rendered, but skeleton covers it while loading */}
+      <div 
+        ref={mountRef} 
+        style={{ 
+          width: '100%', 
+          height: '100%',
+          margin: 0,
+          overflow: 'hidden'
+        }}
+      />
+    </div>
   );
 };
 

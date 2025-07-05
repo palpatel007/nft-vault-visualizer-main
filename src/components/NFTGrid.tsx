@@ -14,6 +14,29 @@ interface NFTGridProps {
 
 const ITEMS_PER_PAGE = 12;
 
+// Skeleton card component for loading state
+const SkeletonCard = ({ index }: { index: number }) => (
+  <motion.div
+    className="bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: index * 0.1 }}
+  >
+    <div className="relative overflow-hidden mb-3 sm:mb-4">
+      {/* Skeleton image */}
+      <div className="w-full h-48 sm:h-56 lg:h-64 bg-gray-200 animate-pulse">
+        <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse"></div>
+      </div>
+    </div>
+    <div className="space-y-2 px-2 sm:px-3 pb-2 sm:pb-3">
+      {/* Skeleton title */}
+      <div className="h-4 bg-gray-200 animate-pulse rounded"></div>
+      {/* Skeleton subtitle */}
+      <div className="h-3 bg-gray-100 animate-pulse rounded w-3/4"></div>
+    </div>
+  </motion.div>
+);
+
 export const NFTGrid: React.FC<NFTGridProps> = ({ nfts, loading, error, downloadFormat, showGLB = false }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(nfts.length / ITEMS_PER_PAGE);
@@ -23,14 +46,16 @@ export const NFTGrid: React.FC<NFTGridProps> = ({ nfts, loading, error, download
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-48 sm:h-64">
+      <div className="space-y-6 sm:space-y-8">
         <motion.div
-          className="flex items-center gap-3 text-black"
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         >
-          <Loader className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
-          <span className="text-base sm:text-lg font-medium">Loading your NFTs...</span>
+          {Array.from({ length: 12 }, (_, index) => (
+            <SkeletonCard key={index} index={index} />
+          ))}
         </motion.div>
       </div>
     );
